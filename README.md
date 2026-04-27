@@ -61,10 +61,12 @@ Deploying high-memory models on a constrained environment (Render Free Tier - 51
 └── README.md           # Technical documentation
 ```
 ## 💻 Installation & Usage
-1. Prerequisites
+
+### 1. Prerequisites
 Ensure you have Python 3.12 installed on your local machine.
 
-2. Local Installation**
+### 2. Local Installation
+```bash
 # Clone the repository
 git clone [https://github.com/your-username/brain-tumors-detection.git](https://github.com/your-username/brain-tumors-detection.git)
 
@@ -73,8 +75,8 @@ cd brain-tumors-detection
 
 # Install required dependencies
 pip install -r requirements.txt
-
-3. Usage
+```
+## 3. Usage
 To run the diagnostic terminal locally:
 # Start the Flask server
 python app.py
