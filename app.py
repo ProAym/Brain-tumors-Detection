@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 # --- CONFIGURATION ---
 # Ensure your model file is named 'Brain_tumor.tflite' inside the models folder
-TFLITE_MODEL_PATH = 'models/Brain_tumor.tflite'
+TFLITE_MODEL_PATH = 'Brain_tumor.tflite'
 UPLOAD_FOLDER = 'static/uploads'
 
 # --- LOAD TFLITE MODEL ---
