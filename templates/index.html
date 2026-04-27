@@ -2,25 +2,79 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Brain Tumor Detection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroScan AI | Brain Tumor Detection</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Brain Tumor Detection</h1>
-        <form id="upload-file" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" id="imageUpload" accept=".png, .jpg, .jpeg">
-            <button type="button" id="btn-predict">Predict Result</button>
-        </form>
-        <div class="loader" style="display:none;"></div>
-        <h3 id="result"><span></span></h3>
-    </div>
+
+    <nav>
+        <div class="logo">NeuroScan <span>AI</span></div>
+    </nav>
+
+    <header class="hero">
+        <h1>Advanced Neural Detection</h1>
+        <p>Utilizing deep learning to assist in the identification of Glioma, Meningioma, and Pituitary tumors from MRI scans.</p>
+    </header>
+
+    <main class="container">
+        <section class="upload-section">
+            <div class="card">
+                <i class="fas fa-microscope icon-main"></i>
+                <h2>Analysis Terminal</h2>
+                <p>Upload a clear MRI scan in JPEG or PNG format.</p>
+                
+                <form id="upload-file" method="post" enctype="multipart/form-data">
+                    <div class="file-input-wrapper">
+                        <button class="btn-secondary">Choose Image</button>
+                        <input type="file" name="file" id="imageUpload" accept=".png, .jpg, .jpeg">
+                    </div>
+                    <button type="button" id="btn-predict" class="btn-primary">Run Diagnostic</button>
+                </form>
+
+                <div class="loader" id="loader" style="display:none;">
+                    <div class="spinner"></div>
+                    <p>Processing Neural Layers...</p>
+                </div>
+
+                <div id="result-container" class="result-box" style="display:none;">
+                    <span class="result-label">Diagnostic Result:</span>
+                    <h3 id="result-text"></h3>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Real-time</h3>
+                <p>Localized processing for instant results.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-brain"></i>
+                <h3>CNN Powered</h3>
+                <p>Optimized Sequential model architecture.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-halved"></i>
+                <h3>Secure</h3>
+                <p>Data is processed and immediately cleared.</p>
+            </div>
+        </section>
+    </main>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#btn-predict').click(function () {
                 var form_data = new FormData($('#upload-file')[0]);
+                
+                // UI Feedback
+                $('#loader').show();
+                $('#result-container').hide();
+                $(this).prop('disabled', true);
+
                 $.ajax({
                     type: 'POST',
                     url: '/predict',
@@ -29,8 +83,15 @@
                     cache: false,
                     processData: false,
                     success: function (data) {
-                        $('#result').fadeIn(600).text(' Prediction: ' + data);
+                        $('#loader').hide();
+                        $('#btn-predict').prop('disabled', false);
+                        $('#result-container').fadeIn();
+                        $('#result-text').text(data);
                     },
+                    error: function() {
+                        $('#loader').hide();
+                        alert("Error processing image.");
+                    }
                 });
             });
         });
