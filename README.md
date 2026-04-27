@@ -59,7 +59,7 @@ Deploying high-memory models on a constrained environment (Render Free Tier - 51
 │   └── index.html      # Clinical terminal dashboard
 ├── requirements.txt    # Production dependencies
 └── README.md           # Technical documentation
-
+```
 ## 💻 Installation & Usage
 1. Prerequisites
 Ensure you have Python 3.12 installed on your local machine.
