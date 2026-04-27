@@ -6,6 +6,17 @@
     <title>NeuroScan AI | Brain Tumor Detection</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Small addition for the image display */
+        .preview-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 2px solid #2563eb;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
 <body>
 
@@ -27,7 +38,7 @@
                 
                 <form id="upload-file" method="post" enctype="multipart/form-data">
                     <div class="file-input-wrapper">
-                        <button class="btn-secondary">Choose Image</button>
+                        <button type="button" class="btn-secondary">Choose Image</button>
                         <input type="file" name="file" id="imageUpload" accept=".png, .jpg, .jpeg">
                     </div>
                     <button type="button" id="btn-predict" class="btn-primary">Run Diagnostic</button>
@@ -41,6 +52,10 @@
                 <div id="result-container" class="result-box" style="display:none;">
                     <span class="result-label">Diagnostic Result:</span>
                     <h3 id="result-text"></h3>
+                    <div class="image-display">
+                        <p style="margin-top: 15px; font-weight: bold; color: #1e293b;">Analyzed Scan:</p>
+                        <img id="scanned-image" src="" alt="Analyzed MRI" class="preview-img">
+                    </div>
                 </div>
             </div>
         </section>
@@ -85,14 +100,30 @@
                     success: function (data) {
                         $('#loader').hide();
                         $('#btn-predict').prop('disabled', false);
-                        $('#result-container').fadeIn();
-                        $('#result-text').text(data);
+                        
+                        if (data.error) {
+                            alert("Error: " + data.error);
+                        } else {
+                            $('#result-container').fadeIn();
+                            $('#result-text').text(data.prediction);
+                            // Update the image source with the path returned from Flask
+                            $('#scanned-image').attr('src', data.image_url);
+                        }
                     },
                     error: function() {
                         $('#loader').hide();
-                        alert("Error processing image.");
+                        $('#btn-predict').prop('disabled', false);
+                        alert("Error contacting the diagnostic server.");
                     }
                 });
+            });
+
+            // Visual feedback for file selection
+            $('#imageUpload').change(function() {
+                var filename = $(this).val().split('\\').pop();
+                if (filename) {
+                    $('.btn-secondary').text("File: " + filename);
+                }
             });
         });
     </script>
