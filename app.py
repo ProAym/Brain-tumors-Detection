@@ -56,31 +56,28 @@ def index():
 
 @app.route('/predict', methods=['POST'])
 def upload():
-    if 'file' not in request.files:
-        return "No file uploaded"
-    
-    f = request.files['file']
-    if f.filename == '':
-        return "No selected file"
-
-    # Ensure upload directory exists
-    if not os.path.exists(UPLOAD_FOLDER):
-        os.makedirs(UPLOAD_FOLDER)
-        
-    file_path = os.path.join(UPLOAD_FOLDER, f.filename)
-    f.save(file_path)
-
     try:
-        # Get Prediction
+        if 'file' not in request.files:
+            return "No file uploaded"
+        f = request.files['file']
+        
+        # Save file
+        basepath = os.path.dirname(__file__)
+        upload_path = os.path.join(basepath, 'static', 'uploads')
+        if not os.path.exists(upload_path): os.makedirs(upload_path)
+        file_path = os.path.join(upload_path, f.filename)
+        f.save(file_path)
+
+        # Predict
         result = model_predict(file_path, model)
         
-        # Optional: Delete the image after prediction to save space
-        if os.path.exists(file_path):
-            os.remove(file_path)
-            
+        # Clean up
+        if os.path.exists(file_path): os.remove(file_path)
+        
         return result
     except Exception as e:
-        return f"Error during prediction: {str(e)}"
+        print(f"CRITICAL ERROR: {str(e)}") # This will show in Render logs
+        return f"Error: {str(e)}"
 
 if __name__ == '__main__':
     # Use Render's port environment variable or default to 10000
