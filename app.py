@@ -57,34 +57,37 @@ def model_predict(img_path):
 def index():
     return render_template('index.html')
 
+# ... (Keep your imports and TFLite setup the same)
+
 @app.route('/predict', methods=['POST'])
 def upload():
     try:
         if 'file' not in request.files:
-            return "No file uploaded"
+            return {"error": "No file uploaded"}
         
         f = request.files['file']
         if f.filename == '':
-            return "No selected file"
+            return {"error": "No selected file"}
 
         if not os.path.exists(UPLOAD_FOLDER):
             os.makedirs(UPLOAD_FOLDER)
             
-        basepath = os.path.dirname(os.path.abspath(__file__))
-        file_path = os.path.join(basepath, UPLOAD_FOLDER, f.filename)
+        # Standardize the filename to avoid path issues
+        filename = f.filename
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
         f.save(file_path)
 
         # Predict using TFLite
         result = model_predict(file_path)
         
-        # Cleanup
-        if os.path.exists(file_path):
-            os.remove(file_path)
-            
-        return result
+        # Return BOTH the result and the image path as JSON
+        return {
+            "prediction": result,
+            "image_url": f"/{UPLOAD_FOLDER}/{filename}"
+        }
 
     except Exception as e:
-        return f"TFLite Error: {str(e)}"
+        return {"error": str(e)}
 
 if __name__ == '__main__':
     # Render dynamic port binding
