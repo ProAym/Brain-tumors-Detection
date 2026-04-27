@@ -88,7 +88,8 @@ Upload a brain MRI scan in JPG or PNG format.
 Click "Run Diagnostic" to initiate the AI-generated classification.
 
 View the result in the clinical result box.
+##
 📜 License
 This project is licensed under the MIT License - see the LICENSE file for details.
-
+##
 Developed by Aymane Computer Engineering Graduate
