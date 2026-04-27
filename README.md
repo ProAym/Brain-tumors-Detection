@@ -7,6 +7,10 @@ NeuroScan AI is a professional clinical analysis terminal that leverages Deep Le
 ## 🚀 Live Demo
 The application is deployed on Render and accessible here:  
 **https://brain-tumors-detection-wrjt.onrender.com/** *(Note: As this is hosted on a free tier, the server may take ~30 seconds to "wake up" during the first request.)*
+<img width="1904" height="916" alt="image" src="https://github.com/user-attachments/assets/39eef0f3-84c3-4f0c-96f2-6fcca93a12d9" />
+<img width="1904" height="920" alt="image" src="https://github.com/user-attachments/assets/f79c755c-8404-4566-b7c7-66622764b308" />
+
+
 
 ## 🧠 Technical Overview
 The core of the system is a Convolutional Neural Network (CNN) designed for spatial feature extraction in medical imagery. The project transitions a research-grade model into a production-ready web application using the Flask micro-framework.
