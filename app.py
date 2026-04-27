@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 # --- LOAD TFLITE MODEL ---
 # This uses much less RAM than load_model()
-interpreter = tf.lite.Interpreter(model_path="models/Brain_tumor.tflite")
+interpreter = tf.lite.Interpreter(model_path="Brain_tumor.tflite")
 interpreter.allocate_tensors()
 
 input_details = interpreter.get_input_details()
