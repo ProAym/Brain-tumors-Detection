@@ -1,4 +1,12 @@
 import os
+# Suppress TensorFlow logs and force CPU-only mode
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
+import tensorflow as tf
+# Disable memory-heavy features
+tf.config.set_visible_devices([], 'GPU')
+
 import numpy as np
 from flask import Flask, request, render_template
 from tensorflow.keras.models import load_model
@@ -75,5 +83,6 @@ def upload():
         return f"Error during prediction: {str(e)}"
 
 if __name__ == '__main__':
-    # Start the Flask server
-    app.run(debug=True)
+    # Use Render's port environment variable or default to 10000
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
