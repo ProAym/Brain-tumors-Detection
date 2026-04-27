@@ -1,64 +1,53 @@
-# NeuroScan AI: Deep Learning System for Brain Tumor Classification
+# NeuroScan AI: Deep Learning for Brain Tumor Classification
 
-NeuroScan AI is a professional clinical analysis terminal designed to assist in the diagnosis of neurological pathologies. Utilizing a Deep Learning backbone, the system provides automated classification of MRI scans into four distinct categories: **Glioma, Meningioma, Pituitary tumor,** and **Healthy.**
+NeuroScan AI is a professional clinical analysis terminal that leverages Deep Learning to assist in the detection and classification of brain tumors from MRI scans. The system classifies scans into four distinct categories: **Glioma, Meningioma, Pituitary tumor,** and **Healthy.**
 
----
 
-## 📋 Project Overview
-The primary objective of this project is to bridge the gap between academic research and accessible medical diagnostics. By transforming a trained Convolutional Neural Network (CNN) into a production-ready web application, NeuroScan AI demonstrates how Computer Engineering principles can be applied to life-saving medical technology.
 
-### Pathological Scope:
-* **Glioma:** Malignant tumors originating in the glial cells of the brain.
-* **Meningioma:** Primary central nervous system (CNS) tumors arising from the meninges.
-* **Pituitary Tumors:** Abnormal growths that develop in the pituitary gland.
-* **Healthy:** MRI scans showing normal neurological structures.
+## 🚀 Live Demo
+The application is deployed on Render and accessible here:  
+**https://brain-tumors-detection-wrjt.onrender.com/** *(Note: As this is hosted on a free tier, the server may take ~30 seconds to "wake up" during the first request.)*
 
----
+## 🧠 Technical Overview
+The core of the system is a Convolutional Neural Network (CNN) designed for spatial feature extraction in medical imagery. The project transitions a research-grade model into a production-ready web application using the Flask micro-framework.
 
-## 🧠 Technical Methodology
-
-### Model Architecture
-The system utilizes a Sequential Convolutional Neural Network (CNN) architecture optimized for spatial feature extraction. The model architecture includes:
-- **Feature Extraction Layers:** Multiple Convolutional layers using 3x3 kernels for edge and density detection.
-- **Dimensionality Reduction:** Max Pooling layers to preserve critical diagnostic features while reducing computational load.
-- **Classification Head:** Dense layers with Softmax activation to provide a probability distribution across classes.
-
-### Pipeline Synchronization & Normalization
-A critical engineering challenge was the synchronization of the preprocessing pipeline. To ensure 100% diagnostic consistency between the training environment and production, we implemented strict Min-Max scaling:
-$$f(x) = \frac{x}{255.0} \in [0, 1]$$
-
----
-
-## ⚡ Cloud Engineering & Optimization
-Deploying high-memory models on a constrained environment (Render Free Tier - 512MB RAM) required extensive **Memory Engineering**:
-
-1.  **Library Optimization:** Switched to `tensorflow-cpu` to strip out heavy GPU-specific binaries (CUDA/cuDNN).
-2.  **Session Management:** Implemented `tf.keras.backend.clear_session()` after every prediction to free up the RAM buffer.
-3.  **Environment Shaping:** Forced CPU-only mode via `os.environ` to prevent unnecessary hardware searches.
-4.  **Timeout Configuration:** Adjusted Gunicorn timeouts to **120 seconds** to ensure successful inference on limited CPU hardware.
-
----
+### Key Features:
+- **Diagnostic Accuracy:** High-precision classification across multiple tumor pathologies.
+- **Asynchronous Inference:** Utilizes AJAX for non-blocking image analysis, ensuring a smooth user experience.
+- **Medical UI/UX:** A clean, professional clinical dashboard designed with modern CSS3.
+- **Resource Optimized:** Specifically engineered to run within a 512MB RAM constraint.
 
 ## 🛠️ Tech Stack
-* **Deep Learning:** TensorFlow, Keras
-* **Backend:** Python, Flask, Gunicorn
-* **Frontend:** HTML5, CSS3 (Clinical Theme), JavaScript (jQuery/AJAX)
-* **Version Control:** Git LFS (Large File Storage)
-* **Hosting:** Render
+- **Deep Learning:** TensorFlow, Keras
+- **Backend:** Python, Flask, Gunicorn
+- **Frontend:** HTML5, CSS3, JavaScript (jQuery)
+- **Deployment:** Render, Git LFS
 
----
+
+
+## ⚡ Engineering Challenges & Solutions
+Deploying Deep Learning models to constrained cloud environments presents unique hurdles. This project addresses several critical engineering bottlenecks:
+
+1. **Memory Engineering:** - Switched to `tensorflow-cpu` to eliminate the heavy RAM overhead of GPU drivers.
+   - Implemented explicit session clearing (`tf.keras.backend.clear_session()`) to prevent memory leaks during inference.
+   
+2. **Computational Constraints:**
+   - Optimized Gunicorn configuration with a 120-second timeout to accommodate CPU-based matrix multiplication on limited hardware.
+   
+3. **Pipeline Synchronization:**
+   - Corrected a critical $x/255$ scaling mismatch between the training distribution and the production API to ensure diagnostic consistency.
 
 ## 📁 Project Structure
 ```text
-├── app.py              # Main Flask application & Inference logic
-├── models/             # Trained .keras model (Stored via Git LFS)
+├── app.py              # Flask backend and inference logic
+├── models/             # Trained deep learning models (.keras)
 ├── static/
-│   ├── css/            # Medical-grade UI styling
-│   └── uploads/        # Temporary diagnostic storage
+│   ├── css/            # Professional UI styling
+│   └── uploads/        # Temporary storage for diagnostic analysis
 ├── templates/
-│   └── index.html      # Clinical terminal dashboard
-├── requirements.txt    # Production dependencies
-└── README.md           # Technical documentation
+│   └── index.html      # Main clinical terminal interface
+├── requirements.txt    # Production-ready dependencies
+└── README.md
 ```
 ## 💻 Installation & Usage
 
